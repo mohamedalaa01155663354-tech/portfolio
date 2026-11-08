@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mohamed Alaa Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a rack-style deck. Header strip, one slide at a time, patch-panel nav at the bottom. */
+:root {
+  --bg: #EDF0F2;
+  --panel: #F8FAFB;
+  --fg: #14202B;
+  --muted: #55646F;
+  --line: #C3CCD3;
+  --accent: #0A6B97;
+  --accent-fg: #FFFFFF;
+  --led: #D99A00;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F171E; --panel: #16212A; --fg: #E4EBF0; --muted: #93A3AF;
+    --line: #2B3A46; --accent: #4DB6E2; --accent-fg: #07151D; --led: #F0B429;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F171E; --panel: #16212A; --fg: #E4EBF0; --muted: #93A3AF;
+  --line: #2B3A46; --accent: #4DB6E2; --accent-fg: #07151D; --led: #F0B429;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.deck { max-width: 1120px; margin: 0 auto; min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; gap: 24px; padding-block: 20px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+.mark { display: flex; align-items: center; gap: 10px; color: var(--fg); font-weight: 500; }
+.mark b { display: inline-grid; place-items: center; width: 30px; height: 30px; background: var(--accent); color: var(--accent-fg); font-family: var(--display); font-size: 13px; letter-spacing: 0; }
+.count { font-variant-numeric: tabular-nums; }
+
+.slide { min-width: 0; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.05; }
+h1 { font-size: clamp(2.6rem, 7vw, 5.2rem); font-weight: 800; letter-spacing: -.02em; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -.015em; }
+h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.2; }
+p { margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.lead { font-size: 1.15rem; max-width: 52ch; color: var(--muted); }
+.stack { display: grid; gap: 18px; align-content: start; }
+.note { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+
+/* Slide 1 */
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; align-items: center; }
+.ports { display: grid; gap: 0; border: 1px solid var(--line); background: var(--panel); max-width: 460px; }
+.port { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: center; padding: 11px 14px; font-size: 14px; border-top: 1px solid var(--line); }
+.port:first-child { border-top: 0; }
+.port .st { font-family: var(--mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.led { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex: none; }
+.led.train { background: transparent; border: 2px solid var(--led); }
+.topo { width: 100%; height: auto; display: block; }
+.topo .ln { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+.topo .ln.act { stroke: var(--accent); stroke-width: 2.5; }
+.topo .nd { fill: var(--panel); stroke: var(--fg); stroke-width: 1.5; }
+.topo .core { fill: var(--accent); stroke: var(--accent); }
+.topo text { font-family: var(--mono); font-size: 11px; fill: var(--muted); letter-spacing: .04em; }
+.topo .on { fill: var(--accent-fg); }
+
+/* Shared blocks */
+.cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
+.card { border: 1px solid var(--line); background: var(--panel); padding: 24px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.card.primary { border-color: var(--accent); border-width: 2px; }
+.card.slot { border-style: dashed; }
+.card.slot h3 { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.chips li { font-family: var(--mono); font-size: 13px; padding: 5px 10px; border: 1px solid var(--line); background: var(--bg); }
+.chips li.ph { border-style: dashed; color: var(--muted); }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
+.side { display: grid; gap: 20px; }
+.sub { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 6px 0 -6px; }
+.card p { color: var(--muted); font-size: 15px; }
+.price { font-family: var(--mono); font-size: 13px; color: var(--fg); border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.price .ph { color: var(--muted); }
+
+/* Services */
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+
+/* Case study */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); background: var(--panel); }
+.fact { padding: 14px 18px; border-left: 1px solid var(--line); min-width: 0; }
+.fact:first-child { border-left: 0; }
+.fact .k { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.fact .v { font-weight: 600; margin-top: 4px; }
+.cs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.cs .wide { grid-column: 1 / -1; }
+.shot { border: 1px dashed var(--line); background: var(--bg); min-height: 120px; display: grid; place-items: center; text-align: center; padding: 16px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+
+/* Docs sample */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: 13px; min-width: 460px; }
+th, td { text-align: left; padding: 10px 14px; border-top: 1px solid var(--line); white-space: nowrap; font-variant-numeric: tabular-nums; }
+th { border-top: 0; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.cap { padding: 10px 14px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+/* Process */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); background: var(--panel); counter-reset: s; }
+.step { padding: 22px; border-left: 1px solid var(--line); display: grid; gap: 10px; align-content: start; min-width: 0; counter-increment: s; }
+.step:first-child { border-left: 0; }
+.step::before { content: "Step " counter(s); font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.step p { color: var(--muted); font-size: 15px; }
+
+/* FAQ */
+.faq { border: 1px solid var(--line); background: var(--panel); }
+.faq details { border-top: 1px solid var(--line); padding: 0 24px; }
+.faq details:first-child { border-top: 0; }
+.faq summary { cursor: pointer; padding: 18px 0; font-family: var(--display); font-weight: 700; font-size: 1.1rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--mono); color: var(--accent); }
+.faq details[open] summary::after { content: "\2212"; }
+.faq details p { padding-bottom: 18px; color: var(--muted); max-width: 70ch; }
+
+/* Contact */
+.links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.link .v { font-family: var(--mono); font-size: 14px; color: var(--muted); border: 1px dashed var(--line); padding: 10px 12px; overflow-wrap: anywhere; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; border: 2px solid var(--accent); background: var(--panel); padding: 20px 24px; }
+.cta .big { font-family: var(--display); font-weight: 700; font-size: 1.3rem; flex: 1 1 260px; }
+.cta .btn { text-decoration: none; display: inline-block; }
+
+/* Nav */
+.nav { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; }
+.btn { font: 500 13px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 10px 16px; border: 1px solid var(--fg); background: transparent; color: var(--fg); cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--fg); color: var(--bg); }
+.btn:disabled { opacity: .35; cursor: default; }
+.btn.go { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.btn.go:hover:not(:disabled) { background: var(--accent); color: var(--accent-fg); filter: brightness(1.1); }
+.tabs { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
+.tab { font: 500 12px var(--mono); letter-spacing: .05em; text-transform: uppercase; padding: 8px 8px; border: 0; border-bottom: 3px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.tab[aria-current="true"] { border-bottom-color: var(--accent); color: var(--fg); }
+.tab:hover { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 900px) {
+  .hero, .cols, .grid2, .cs, .links { grid-template-columns: minmax(0, 1fr); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step:nth-child(3) { border-left: 0; }
+  .step:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .fact { border-left: 0; border-top: 1px solid var(--line); }
+  .fact:first-child { border-top: 0; }
+  .tab span { display: none; }
+  .tab::before { content: attr(data-n); }
+  .hero { gap: 28px; }
+}
+@media (max-width: 480px) {
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .step { border-left: 0; border-top: 1px solid var(--line); }
+  .step:first-child { border-top: 0; }
+  .btn { padding: 10px 12px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .slide { animation: in .35s ease-out; }
+  @keyframes in { from { transform: translateY(8px); } to { transform: none; } }
+}
+</style>
+
+</head>
+<body>
+<div class="deck">
+  <header class="top">
+    <div class="mark"><b>MA</b><span>Portfolio deck · 2026</span></div>
+    <div class="count" id="count">01 / 08</div>
+  </header>
+
+  <main>
+    <!-- 1 Profile -->
+    <section class="slide" data-title="Profile">
+      <div class="hero">
+        <div class="stack">
+          <div class="eyebrow">Network Engineering &amp; Infrastructure</div>
+          <h1>Mohamed Alaa</h1>
+          <p class="lead">Network engineer, 23, building solid foundations in routing, switching and infrastructure, with cloud and cybersecurity training alongside. Available for freelance work.</p>
+          <div class="ports" role="list" aria-label="Skill status">
+            <div class="port" role="listitem"><span class="led"></span><span>Network Engineering &amp; Infrastructure</span><span class="st">Core track</span></div>
+            <div class="port" role="listitem"><span class="led train"></span><span>Cloud</span><span class="st">In training</span></div>
+            <div class="port" role="listitem"><span class="led train"></span><span>Cybersecurity</span><span class="st">In training</span></div>
+          </div>
+        </div>
+        <svg class="topo" viewBox="0 0 400 340" role="img" aria-label="Network topology: a router connects to two switches, each serving two hosts">
+          <line class="ln act" x1="200" y1="70" x2="110" y2="170"/>
+          <line class="ln act" x1="200" y1="70" x2="290" y2="170"/>
+          <line class="ln" x1="110" y1="170" x2="60" y2="272"/>
+          <line class="ln" x1="110" y1="170" x2="160" y2="272"/>
+          <line class="ln" x1="290" y1="170" x2="240" y2="272"/>
+          <line class="ln" x1="290" y1="170" x2="340" y2="272"/>
+          <line class="ln" x1="200" y1="70" x2="200" y2="22" stroke-dasharray="4 4"/>
+          <rect class="nd core" x="165" y="48" width="70" height="44"/>
+          <text class="on" x="200" y="75" text-anchor="middle">ROUTER</text>
+          <rect class="nd" x="72" y="150" width="76" height="40"/>
+          <text x="110" y="174" text-anchor="middle">SW-1</text>
+          <rect class="nd" x="252" y="150" width="76" height="40"/>
+          <text x="290" y="174" text-anchor="middle">SW-2</text>
+          <rect class="nd" x="38" y="272" width="44" height="30"/>
+          <rect class="nd" x="138" y="272" width="44" height="30"/>
+          <rect class="nd" x="218" y="272" width="44" height="30"/>
+          <rect class="nd" x="318" y="272" width="44" height="30"/>
+          <text x="60" y="324" text-anchor="middle">VLAN 10</text>
+          <text x="160" y="324" text-anchor="middle">VLAN 10</text>
+          <text x="240" y="324" text-anchor="middle">VLAN 20</text>
+          <text x="340" y="324" text-anchor="middle">VLAN 20</text>
+          <text x="200" y="14" text-anchor="middle">WAN / CLOUD</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 2 Expertise, tools, training -->
+    <section class="slide" data-title="Expertise" hidden>
+      <div class="stack">
+        <div class="eyebrow">Expertise, tools &amp; training</div>
+        <h2>Networks that are planned, documented and secured</h2>
+        <div class="cols">
+          <div class="card primary">
+            <span class="tag"><span class="led"></span>Primary focus</span>
+            <h3>Network Engineering &amp; Infrastructure</h3>
+            <p>Designing and configuring small and mid-size networks, from addressing plan to working connectivity between segments.</p>
+            <ul class="chips">
+              <li>Routing &amp; Switching</li>
+              <li>IP Addressing &amp; Subnetting</li>
+              <li>VLANs</li>
+              <li>Network Troubleshooting</li>
+              <li>Infrastructure Design</li>
+            </ul>
+            <div class="sub">Tools</div>
+            <ul class="chips">
+              <li>Cisco Packet Tracer</li>
+              <li>GNS3</li>
+              <li>Wireshark</li>
+              <li>Nmap</li>
+              <li>Linux</li>
+              <li class="ph">[Confirm your tools]</li>
+            </ul>
+          </div>
+          <div class="side">
+            <div class="card">
+              <span class="tag"><span class="led"></span>Track</span>
+              <h3>DEPI</h3>
+              <p>Network Engineering / Infrastructure track, with a graduation project built in a team of 6.</p>
+            </div>
+            <div class="card">
+              <span class="tag"><span class="led train"></span>In training</span>
+              <h3>Cloud &amp; Cybersecurity</h3>
+              <p>Both courses are in progress. Cloud extends the networks I build, and security hardens them.</p>
+            </div>
+            <div class="card slot">
+              <span class="tag">Next certification</span>
+              <h3>[Add if you are preparing for one]</h3>
+              <p>Label it "Preparing for" until you pass it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 Services -->
+    <section class="slide" data-title="Services" hidden>
+      <div class="stack">
+        <div class="eyebrow">Services &amp; packages</div>
+        <h2>What I can set up for you</h2>
+        <div class="grid2">
+          <div class="card primary">
+            <h3>Small-office network design</h3>
+            <p>Addressing plan, VLAN layout and a topology diagram, ready to build.</p>
+            <div class="price"><span>From <span class="ph">[price]</span></span><span><span class="ph">[days]</span> delivery</span></div>
+          </div>
+          <div class="card">
+            <h3>VLANs &amp; routing setup</h3>
+            <p>Segment your network and route between segments, with configs documented.</p>
+            <div class="price"><span>From <span class="ph">[price]</span></span><span><span class="ph">[days]</span> delivery</span></div>
+          </div>
+          <div class="card">
+            <h3>Network troubleshooting</h3>
+            <p>Find and fix connectivity, speed and Wi-Fi problems, with a short report of the cause.</p>
+            <div class="price"><span>From <span class="ph">[price]</span></span><span><span class="ph">[days]</span> delivery</span></div>
+          </div>
+          <div class="card">
+            <h3>Wi-Fi &amp; firewall hardening</h3>
+            <p>Secure access, separate guest traffic and tighten basic firewall rules.</p>
+            <div class="price"><span>From <span class="ph">[price]</span></span><span><span class="ph">[days]</span> delivery</span></div>
+          </div>
+        </div>
+        <p class="note">Every service includes a diagram and written documentation of what was configured.</p>
+      </div>
+    </section>
+
+    <!-- 4 Case study -->
+    <section class="slide" data-title="Case study" hidden>
+      <div class="stack">
+        <div class="eyebrow">Case study</div>
+        <h2>DEPI Graduation Project</h2>
+        <div class="facts">
+          <div class="fact"><div class="k">Team</div><div class="v">6 members</div></div>
+          <div class="fact"><div class="k">Track</div><div class="v">Network Engineering / Infrastructure</div></div>
+          <div class="fact"><div class="k">My role</div><div class="v">[Add your part]</div></div>
+        </div>
+        <div class="cs">
+          <div class="card"><h3>Problem</h3><p>[What the project set out to solve, in two sentences.]</p></div>
+          <div class="card"><h3>Solution</h3><p>[What the team built, and the part you designed or configured.]</p></div>
+          <div class="card"><h3>Tools</h3><ul class="chips"><li class="ph">[Tool]</li><li class="ph">[Tool]</li><li class="ph">[Tool]</li></ul></div>
+          <div class="card"><h3>Result</h3><p>[What worked at the end. Add a test result such as ping or traceroute output if you have it.]</p></div>
+          <div class="shot wide">[Topology screenshot or diagram of the project]</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 Lab & documentation -->
+    <section class="slide" data-title="Lab &amp; docs" hidden>
+      <div class="stack">
+        <div class="eyebrow">Lab &amp; documentation</div>
+        <h2>Work I can show, and paperwork I hand over</h2>
+        <div class="cols">
+          <div class="card slot">
+            <span class="tag">Personal lab</span>
+            <h3>[Lab title, e.g. 3 VLANs with inter-VLAN routing]</h3>
+            <p>Build it in Packet Tracer or GNS3, screenshot the topology and the ping tests, and publish the configs on GitHub. Replace this card with the real lab.</p>
+            <ul class="chips"><li class="ph">[Screenshot]</li><li class="ph">[ping test]</li><li class="ph">[GitHub link]</li></ul>
+          </div>
+          <div class="card">
+            <span class="tag"><span class="led"></span>Sample deliverable</span>
+            <h3>Network documentation</h3>
+            <p>Every project ends with an IP plan like this one, plus a diagram and the final configs.</p>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>VLAN</th><th>Name</th><th>Subnet</th><th>Gateway</th><th>Hosts</th></tr></thead>
+            <tbody>
+              <tr><td>10</td><td>Staff</td><td>192.168.10.0/24</td><td>192.168.10.1</td><td>254</td></tr>
+              <tr><td>20</td><td>Guests</td><td>192.168.20.0/24</td><td>192.168.20.1</td><td>254</td></tr>
+              <tr><td>30</td><td>Servers</td><td>192.168.30.0/24</td><td>192.168.30.1</td><td>254</td></tr>
+              <tr><td>99</td><td>Management</td><td>192.168.99.0/24</td><td>192.168.99.1</td><td>254</td></tr>
+            </tbody>
+          </table>
+          <div class="cap">Sample format with example addressing. Not a client network.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 Process -->
+    <section class="slide" data-title="Process" hidden>
+      <div class="stack">
+        <div class="eyebrow">How I work</div>
+        <h2>Four steps, so you always know what comes next</h2>
+        <div class="steps">
+          <div class="step"><h3>Understand</h3><p>We agree on your devices, users, budget and what must work when I finish.</p></div>
+          <div class="step"><h3>Design</h3><p>I send an addressing plan and topology diagram for your approval before touching anything.</p></div>
+          <div class="step"><h3>Build &amp; test</h3><p>I configure the network and test every link, then share the results.</p></div>
+          <div class="step"><h3>Hand over</h3><p>You receive the configs, the diagram and a short guide to the setup.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 FAQ -->
+    <section class="slide" data-title="FAQ" hidden>
+      <div class="stack">
+        <div class="eyebrow">Questions</div>
+        <h2>Before you message me</h2>
+        <div class="faq">
+          <details open><summary>Do you work remotely?</summary><p>Yes. Design, configuration files and troubleshooting guidance are delivered remotely. [Confirm whether you also work on site.]</p></details>
+          <details><summary>What do I receive at the end?</summary><p>A network diagram, an IP plan, the device configurations and a short written guide, so anyone can maintain the setup later.</p></details>
+          <details><summary>How soon can you start?</summary><p>[Add your availability, for example "within 2 days of agreeing on scope".]</p></details>
+          <details><summary>How is pricing decided?</summary><p>By scope: the number of devices, segments and the documentation needed. Message me the details and I will send a fixed price.</p></details>
+          <details><summary>What if something breaks after delivery?</summary><p>[Add your support policy, for example "free fixes for 7 days after delivery".]</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 Contact -->
+    <section class="slide" data-title="Contact" hidden>
+      <div class="stack">
+        <div class="eyebrow">Contact</div>
+        <h2>Let's talk about your network</h2>
+        <div class="cta">
+          <div class="big">Start an order on Khamsat</div>
+          <span class="note">[Add your Khamsat profile link]</span>
+        </div>
+        <div class="links">
+          <div class="card link"><span class="tag">LinkedIn</span><div class="v">[Add your LinkedIn link]</div></div>
+          <div class="card link"><span class="tag">GitHub</span><div class="v">[Add your GitHub link]</div></div>
+          <div class="card link"><span class="tag">Email</span><div class="v">[Add your business email]</div></div>
+          <div class="card link"><span class="tag">Reply time</span><div class="v">[e.g. within 24 hours, Cairo time]</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="nav" aria-label="Slides">
+    <button class="btn" id="prev" type="button">&larr; Prev</button>
+    <div class="tabs" id="tabs"></div>
+    <button class="btn go" id="next" type="button">Next &rarr;</button>
+  </nav>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var tabsEl = document.getElementById('tabs');
+  var countEl = document.getElementById('count');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var cur = 0;
+
+  slides.forEach(function (s, i) {
+    var b = document.createElement('button');
+    b.className = 'tab'; b.type = 'button';
+    b.setAttribute('data-n', '0' + (i + 1));
+    b.innerHTML = '<span>' + s.getAttribute('data-title') + '</span>';
+    b.addEventListener('click', function () { go(i); });
+    tabsEl.appendChild(b);
+  });
+
+  function fromHash() {
+    var m = /^#slide-(\d)$/.exec(location.hash);
+    var n = m ? parseInt(m[1], 10) - 1 : 0;
+    return n >= 0 && n < slides.length ? n : 0;
+  }
+  function render() {
+    slides.forEach(function (s, i) { s.hidden = i !== cur; });
+    Array.prototype.forEach.call(tabsEl.children, function (t, i) {
+      t.setAttribute('aria-current', i === cur ? 'true' : 'false');
+    });
+    countEl.textContent = '0' + (cur + 1) + ' / 0' + slides.length;
+    prev.disabled = cur === 0;
+    next.disabled = cur === slides.length - 1;
+  }
+  function go(i) {
+    if (i < 0 || i >= slides.length) return;
+    cur = i;
+    try { history.replaceState(null, '', '#slide-' + (i + 1)); } catch (e) { location.hash = 'slide-' + (i + 1); }
+    render();
+    window.scrollTo(0, 0);
+  }
+  prev.addEventListener('click', function () { go(cur - 1); });
+  next.addEventListener('click', function () { go(cur + 1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') go(cur + 1);
+    if (e.key === 'ArrowLeft') go(cur - 1);
+  });
+  window.addEventListener('hashchange', function () { cur = fromHash(); render(); });
+  cur = fromHash();
+  render();
+})();
+</script>
+
+</body>
+</html>
